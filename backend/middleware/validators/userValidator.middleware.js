@@ -102,3 +102,34 @@ exports.updatePasswordSchema = [
         .custom((value, { req }) => value === req.body.password)
         .withMessage('Password and confirm password does not match')
 ];
+
+exports.updateSettingsSchema = [
+    body('emailNotifications')
+        .optional()
+        .isBoolean()
+        .withMessage('emailNotifications must be a boolean'),
+    body('pushNotifications')
+        .optional()
+        .isBoolean()
+        .withMessage('pushNotifications must be a boolean'),
+    body('smsNotifications')
+        .optional()
+        .isBoolean()
+        .withMessage('smsNotifications must be a boolean'),
+    body('twoFactorAuth')
+        .optional()
+        .isBoolean()
+        .withMessage('twoFactorAuth must be a boolean'),
+    body('language')
+        .optional()
+        .isIn(['en', 'es', 'fr', 'de', 'zh', 'ja'])
+        .withMessage('language must be one of: en, es, fr, de, zh, ja'),
+    body('theme')
+        .optional()
+        .isIn(['light', 'dark'])
+        .withMessage('theme must be either light or dark'),
+    body('currency')
+        .optional()
+        .isIn(['USD', 'EUR', 'GBP', 'JPY', 'CNY'])
+        .withMessage('currency must be one of: USD, EUR, GBP, JPY, CNY')
+];

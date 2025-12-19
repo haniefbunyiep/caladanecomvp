@@ -18,7 +18,8 @@ class MockDataService {
     this.tickets = new Map();
     this.ticketMessages = new Map();
     this.sessions = new Map();
-    
+    this.userSettings = new Map();
+
     // Initialize with sample data
     this.initializeSampleData();
   }
@@ -249,7 +250,7 @@ class MockDataService {
         const unstakeDate = new Date(staking.created_date);
         unstakeDate.setDate(unstakeDate.getDate() + staking.staking_duration);
         const remainingSeconds = Math.max(0, Math.floor((unstakeDate.getTime() - Date.now()) / 1000));
-        
+
         stakings.push({
           ...staking,
           totalreward: totalReward,
@@ -587,8 +588,36 @@ class MockDataService {
     return Array.from(this.transactions.values()).sort((a, b) => b.id - a.id);
   }
 
-  getAllStaking() {
-    return Array.from(this.staking.values()).sort((a, b) => b.id - a.id);
+  // User settings operations
+  getUserSettings(userId) {
+    const settings = this.userSettings.get(parseInt(userId));
+    if (settings) {
+      return settings;
+    }
+    // Return default settings if none exist
+    return {
+      userId: parseInt(userId),
+      emailNotifications: true,
+      pushNotifications: true,
+      smsNotifications: false,
+      twoFactorAuth: false,
+      language: 'en',
+      theme: 'light',
+      currency: 'USD',
+      updatedAt: new Date(),
+    };
+  }
+
+  updateUserSettings(userId, settings) {
+    const existingSettings = this.userSettings.get(parseInt(userId));
+    const updatedSettings = {
+      userId: parseInt(userId),
+      ...(existingSettings || {}),
+      ...settings,
+      updatedAt: new Date(),
+    };
+    this.userSettings.set(parseInt(userId), updatedSettings);
+    return { affectedRows: 1, settings: updatedSettings };
   }
 }
 

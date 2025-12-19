@@ -12,6 +12,7 @@ import PublicRoutes from "./helper/PublicRoutes.tsx";
 import PrivateRoutes from "./helper/PrivateRoutes";
 import Profile from "./profile/Profile";
 import EditProfile from "./profile/EditProfile";
+import Settings from "./profile/Settings";
 
 const Layout = () => {
   return (
@@ -62,6 +63,7 @@ export function Routers() {
             </PrivateRoutes>
           }
         />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/google/redirect" element={<GoogleRedirect />} />
         <Route path="/" element={<Navigate to="/dashboard" />} />
       </Route>

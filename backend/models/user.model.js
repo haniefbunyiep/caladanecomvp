@@ -210,7 +210,7 @@ class UserModel {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       createdDate.setHours(0, 0, 0, 0);
-      
+
       if (staking.status === 1 && createdDate < today) {
         return [{
           id: staking.id,
@@ -292,6 +292,14 @@ class UserModel {
 
   async userBUSDDepositCheck() {
     return mockData.getPendingDeposits();
+  }
+
+  async getUserSettings(userId) {
+    return mockData.getUserSettings(userId);
+  }
+
+  async updateUserSettings(userId, settings) {
+    return mockData.updateUserSettings(userId, settings);
   }
 }
 

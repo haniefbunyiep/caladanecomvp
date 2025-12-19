@@ -9,8 +9,12 @@ const http = axios.create({
 http.interceptors.request.use((config) => {
   const token = localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE);
 
-  if (token) {
+  // Only add Authorization header if token exists and is not empty
+  if (token && token.trim() !== '') {
     config.headers.Authorization = `Bearer ${token}`;
+  } else {
+    // Explicitly remove Authorization header if no token
+    delete config.headers.Authorization;
   }
 
   return config;
@@ -21,7 +25,7 @@ http.interceptors.response.use(
     return config;
   },
   (error) => {
-    if (error.status === 401 || error.response.status === 401) {
+    if (error.response && (error.response.status === 401 || error.status === 401)) {
       localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE);
       Navigate({ to: "/" });
       return;
